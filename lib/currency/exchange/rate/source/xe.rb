@@ -70,7 +70,8 @@ class Currency::Exchange::Rate::Source::Xe < ::Currency::Exchange::Rate::Source:
      raise ParserError, "Currencies header not found" if currency.empty?
 
      # Parse out the actual rates, dealing with the explanation gunk about which currency is worth more
-     parsed_rates = doc.search(".currency tr:nth-child(2) .cLast , .currency tr:nth-child(2) .c2").map do |e|
+     
+     parsed_rates = doc.search(".currency tr:nth-child(2) td.c2.cA, .currency tr:nth-child(2) td.cLast").map do |e|
        if (inner = e.search('div.aboveLayer')).size > 0
          inner.inner_text.strip
        else
@@ -90,7 +91,12 @@ class Currency::Exchange::Rate::Source::Xe < ::Currency::Exchange::Rate::Source:
        $stderr.puts "#{cur.inspect} => #{usd_to_cur}" if @verbose      
      end
 
+
+
+
     raise ::Currency::Exception::UnavailableRates, "No rates found in #{get_uri.inspect}" if rate.keys.empty?
+
+
 
     raise ParserError, 
     [
