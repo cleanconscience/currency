@@ -70,7 +70,7 @@ class Currency::Exchange::Rate::Source::Xe < ::Currency::Exchange::Rate::Source:
      raise ParserError, "Currencies header not found" if currency.empty?
 
      # Parse out the actual rates, dealing with the explanation gunk about which currency is worth more
-     parsed_rates = doc.search("table.currency tr:nth-child(0) .c2, table.currency tr:nth-child(0) .cLast").map do |e|
+     parsed_rates = doc.search(".currency tr:nth-child(2) .cLast , .currency tr:nth-child(2) .c2").map do |e|
        if (inner = e.search('div.aboveLayer')).size > 0
          inner.inner_text.strip
        else
